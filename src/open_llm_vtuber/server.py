@@ -85,6 +85,14 @@ class WebSocketServer:
             name="web_tool",
         )
 
+        # Serve Three.js demo
+        if os.path.isdir("threejs-demo"):
+            self.app.mount(
+                "/threejs-demo",
+                CustomStaticFiles(directory="threejs-demo", html=True),
+                name="threejs_demo",
+            )
+
         # Mount main frontend last (as catch-all)
         self.app.mount(
             "/",
