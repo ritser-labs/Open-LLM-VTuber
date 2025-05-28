@@ -124,6 +124,10 @@ Checkout the [development guide](https://docs.llmvtuber.com/docs/development-gui
 [ylxmf2005/LLM-Live2D-Desktop-Assitant](https://github.com/ylxmf2005/LLM-Live2D-Desktop-Assitant)
 - Your Live2D desktop assistant powered by LLM! Available for both Windows and MacOS, it senses your screen, retrieves clipboard content, and responds to voice commands with a unique voice. Featuring voice wake-up, singing capabilities, and full computer control for seamless interaction with your favorite character.
 
+## 🕹️ Three.js Demo
+
+Run the server and visit [`/threejs-demo`](http://localhost:12393/threejs-demo/) to see a basic Three.js scene rendering a sample model. This page helps verify that your browser can display 3D avatars correctly.
+
 
 
 
