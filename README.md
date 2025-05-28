@@ -102,7 +102,7 @@ This project underwent code refactoring after version `v1.0.0` and is currently 
 
 Please refer to the [Quick Start](https://open-llm-vtuber.github.io/docs/quick-start) section in our documentation for installation.
 
-After starting the server with `uv run run_server.py`, open `http://localhost:8000/threejs-demo/` to try the new Three.js demo interface.
+After starting the server with `uv run run_server.py`, open `http://localhost:12393/threejs-demo/` to try the new Three.js demo interface.
 
 
 
