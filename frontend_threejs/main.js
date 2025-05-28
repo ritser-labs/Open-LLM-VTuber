@@ -33,6 +33,52 @@ const messagesDiv = document.getElementById('messages');
 const userInput = document.getElementById('userInput');
 const sendBtn = document.getElementById('sendBtn');
 let ws;
+// Queue to ensure audio messages play sequentially
+const audioQueue = [];
+let isPlayingAudio = false;
+
+function queueAudio(base64Audio, actions, displayText) {
+    audioQueue.push({base64Audio, actions, displayText});
+    if (!isPlayingAudio) {
+        playNextAudio();
+    }
+}
+
+function playNextAudio() {
+    if (audioQueue.length === 0) {
+        isPlayingAudio = false;
+        return;
+    }
+    isPlayingAudio = true;
+    const {base64Audio, actions, displayText} = audioQueue.shift();
+
+    if (displayText && displayText.text) {
+        appendMessage(displayText.text);
+    }
+
+    if (!base64Audio) {
+        ws.send(JSON.stringify({type: 'frontend-playback-complete'}));
+        isPlayingAudio = false;
+        playNextAudio();
+        return;
+    }
+
+    const audio = new Audio('data:audio/wav;base64,' + base64Audio);
+
+    if (actions && actions.expressions && actions.expressions.length) {
+        const expr = actions.expressions[0];
+        const colors = [0x44aa88, 0xff5555, 0x5555ff, 0xffff55];
+        avatar.material.color.setHex(colors[expr % colors.length]);
+    }
+
+    audio.onended = () => {
+        ws.send(JSON.stringify({type: 'frontend-playback-complete'}));
+        isPlayingAudio = false;
+        playNextAudio();
+    };
+
+    audio.play();
+}
 
 function appendMessage(text, from='system') {
     const div = document.createElement('div');
@@ -50,22 +96,9 @@ function connect() {
         const msg = JSON.parse(event.data);
         if (msg.type === 'full-text' && msg.text) {
             appendMessage(msg.text);
-        } else if (msg.type === 'audio' && msg.audio) {
-            playAudio(msg.audio, msg.actions);
+        } else if (msg.type === 'audio') {
+            queueAudio(msg.audio, msg.actions, msg.display_text);
         }
-    };
-}
-
-function playAudio(base64Audio, actions) {
-    const audio = new Audio('data:audio/wav;base64,' + base64Audio);
-    audio.play();
-    if (actions && actions.expressions && actions.expressions.length) {
-        const expr = actions.expressions[0];
-        const colors = [0x44aa88, 0xff5555, 0x5555ff, 0xffff55];
-        avatar.material.color.setHex(colors[expr % colors.length]);
-    }
-    audio.onended = () => {
-        ws.send(JSON.stringify({type: 'frontend-playback-complete'}));
     };
 }
 
