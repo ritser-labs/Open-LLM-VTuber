@@ -85,10 +85,29 @@ class WebSocketServer:
             name="web_tool",
         )
 
+        # Serve Three.js demo
+        if os.path.isdir("threejs-demo"):
+            self.app.mount(
+                "/threejs-demo",
+                CustomStaticFiles(directory="threejs-demo", html=True),
+                name="threejs_demo",
+            )
+
         # Mount main frontend last (as catch-all)
+        frontend_dir = "frontend"
+        if os.path.isdir(frontend_dir) and os.listdir(frontend_dir):
+            mount_dir = frontend_dir
+        else:
+            print(
+                "Frontend submodule not initialized. "
+                "Serving placeholder page. Run 'git submodule update --init --recursive' "
+                "to restore the chat interface."
+            )
+            mount_dir = "frontend-placeholder"
+
         self.app.mount(
             "/",
-            CustomStaticFiles(directory="frontend", html=True),
+            CustomStaticFiles(directory=mount_dir, html=True),
             name="frontend",
         )
 

@@ -101,6 +101,14 @@ This project underwent code refactoring after version `v1.0.0` and is currently 
 
 Please refer to the [Quick Start](https://open-llm-vtuber.github.io/docs/quick-start) section in our documentation for installation.
 
+After cloning the repository, make sure to fetch the web frontend submodule:
+
+```bash
+git submodule update --init --recursive
+```
+
+Without the submodule, the chat interface will be replaced by a placeholder page.
+
 
 
 ## ☝ Update
@@ -123,6 +131,10 @@ Checkout the [development guide](https://docs.llmvtuber.com/docs/development-gui
 
 [ylxmf2005/LLM-Live2D-Desktop-Assitant](https://github.com/ylxmf2005/LLM-Live2D-Desktop-Assitant)
 - Your Live2D desktop assistant powered by LLM! Available for both Windows and MacOS, it senses your screen, retrieves clipboard content, and responds to voice commands with a unique voice. Featuring voice wake-up, singing capabilities, and full computer control for seamless interaction with your favorite character.
+
+## 🕹️ Three.js Demo
+
+Run the server and visit [`/threejs-demo`](http://localhost:12393/threejs-demo/) to see a basic Three.js scene rendering a sample model. This page helps verify that your browser can display 3D avatars correctly.
 
 
 
