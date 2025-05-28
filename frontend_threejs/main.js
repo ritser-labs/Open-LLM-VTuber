@@ -1,4 +1,5 @@
-import * as THREE from 'https://unpkg.com/three@0.160.0/build/three.module.js';
+// Import Three.js using the CDN path defined in the import map
+import * as THREE from 'three';
 
 const canvas = document.getElementById('renderArea');
 const scene = new THREE.Scene();
