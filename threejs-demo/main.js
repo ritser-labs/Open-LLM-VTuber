@@ -43,3 +43,55 @@ function animate() {
   renderer.render(scene, camera);
 }
 animate();
+
+// Chat interface logic
+const messagesDiv = document.getElementById('messages');
+const inputEl = document.getElementById('chatInput');
+const sendBtn = document.getElementById('sendBtn');
+
+function addMessage(sender, text) {
+  const div = document.createElement('div');
+  div.className = sender;
+  div.textContent = text;
+  messagesDiv.appendChild(div);
+  messagesDiv.scrollTop = messagesDiv.scrollHeight;
+}
+
+const wsProtocol = window.location.protocol === 'https:' ? 'wss' : 'ws';
+const socket = new WebSocket(`${wsProtocol}://${window.location.host}/client-ws`);
+
+socket.addEventListener('open', () => {
+  addMessage('system', 'WebSocket connected');
+});
+
+socket.addEventListener('message', event => {
+  try {
+    const data = JSON.parse(event.data);
+    if (data.type === 'full-text') {
+      addMessage('ai', data.text);
+    } else if (data.type === 'error') {
+      addMessage('error', data.message);
+    }
+  } catch (e) {
+    console.error('Invalid message', e);
+  }
+});
+
+socket.addEventListener('close', () => {
+  addMessage('system', 'WebSocket disconnected');
+});
+
+function sendMessage() {
+  const text = inputEl.value.trim();
+  if (!text || socket.readyState !== WebSocket.OPEN) return;
+  socket.send(JSON.stringify({ type: 'text-input', text }));
+  addMessage('user', text);
+  inputEl.value = '';
+}
+
+sendBtn.addEventListener('click', sendMessage);
+inputEl.addEventListener('keypress', e => {
+  if (e.key === 'Enter') {
+    sendMessage();
+  }
+});
