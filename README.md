@@ -134,7 +134,7 @@ Checkout the [development guide](https://docs.llmvtuber.com/docs/development-gui
 
 ## 🕹️ Three.js Demo
 
-Run the server and visit [`/threejs-demo`](http://localhost:12393/threejs-demo/) to see a basic Three.js scene rendering a sample model. This page helps verify that your browser can display 3D avatars correctly. The demo loads Three.js modules from a CDN using an import map, so an active internet connection is required.
+Run the server and visit [`/threejs-demo`](http://localhost:12393/threejs-demo/) to see a basic Three.js scene rendering an animated avatar. This page helps verify that your browser can display 3D avatars correctly. The demo loads Three.js modules from a CDN using an import map, so an active internet connection is required.
 
 
 

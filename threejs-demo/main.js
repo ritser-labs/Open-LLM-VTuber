@@ -15,11 +15,20 @@ const light = new THREE.DirectionalLight(0xffffff, 1);
 light.position.set(1, 1, 1);
 scene.add(light);
 
+const clock = new THREE.Clock();
+let mixer;
+
 const loader = new GLTFLoader();
 loader.load(
-  'https://raw.githubusercontent.com/KhronosGroup/glTF-Sample-Models/master/2.0/Box/glTF/Box.gltf',
+  'https://raw.githubusercontent.com/KhronosGroup/glTF-Sample-Models/master/2.0/Fox/glTF-Binary/Fox.glb',
   gltf => {
-    scene.add(gltf.scene);
+    const model = gltf.scene;
+    scene.add(model);
+    if (gltf.animations && gltf.animations.length > 0) {
+      mixer = new THREE.AnimationMixer(model);
+      const action = mixer.clipAction(gltf.animations[0]);
+      action.play();
+    }
   },
   undefined,
   error => {
@@ -39,6 +48,8 @@ window.addEventListener('resize', onWindowResize);
 
 function animate() {
   requestAnimationFrame(animate);
+  const delta = clock.getDelta();
+  if (mixer) mixer.update(delta);
   controls.update();
   renderer.render(scene, camera);
 }
