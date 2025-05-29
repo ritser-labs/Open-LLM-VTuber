@@ -69,6 +69,9 @@ socket.addEventListener('message', event => {
     const data = JSON.parse(event.data);
     if (data.type === 'full-text') {
       addMessage('ai', data.text);
+    } else if (data.type === 'audio' && data.display_text) {
+      // display_text contains the message text along with optional name/avatar
+      addMessage('ai', data.display_text.text);
     } else if (data.type === 'error') {
       addMessage('error', data.message);
     }
