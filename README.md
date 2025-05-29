@@ -101,6 +101,14 @@ This project underwent code refactoring after version `v1.0.0` and is currently 
 
 Please refer to the [Quick Start](https://open-llm-vtuber.github.io/docs/quick-start) section in our documentation for installation.
 
+After cloning the repository, make sure to initialize the `frontend` submodule so the web interface can be served correctly:
+
+```bash
+git submodule update --init --recursive
+```
+
+If the submodule isn't pulled, navigating to `http://localhost:12393/` will show **Not Found** and pages like `/threejs-demo` won't function properly.
+
 
 
 ## ☝ Update
