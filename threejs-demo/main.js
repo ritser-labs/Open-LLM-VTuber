@@ -69,12 +69,16 @@ socket.addEventListener('message', event => {
     const data = JSON.parse(event.data);
     if (data.type === 'full-text') {
       addMessage('ai', data.text);
-    } else if (data.type === 'audio' && data.display_text) {
+  } else if (data.type === 'audio' && data.display_text) {
       // display_text contains the message text along with optional name/avatar
       addMessage('ai', data.display_text.text);
-    } else if (data.type === 'error') {
+  } else if (data.type === 'backend-synth-complete') {
+      // In this minimal demo we don't play audio, so immediately
+      // notify the backend that playback is complete
+      socket.send(JSON.stringify({ type: 'frontend-playback-complete' }));
+  } else if (data.type === 'error') {
       addMessage('error', data.message);
-    }
+  }
   } catch (e) {
     console.error('Invalid message', e);
   }
